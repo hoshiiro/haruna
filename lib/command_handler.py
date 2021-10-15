@@ -1,22 +1,34 @@
 import requests, json, discord
 from . import bot
 
+prev_msg = None
+
 @bot.command('aquote')
-async def test(ctx, *, msg):
+async def test(ctx, *, character_name):
     """
     Shows a quote by anime character. 
     Example: .aquote first_char_name last_char_name
     """
 
-    response = requests.get("https://animechan.vercel.app/api/quotes/character?name={}".format(msg))
-    data = json.loads(response.text)
-    data = data[0]
+    response = requests.get("https://animechan.vercel.app/api/quotes/character?name={}".format(character_name))
+    if response.status_code == 404:
+        
+        message = await ctx.send("> Character not found, maybe a typo(?) or not in the database(?)")
+        prev_msg = True
+    else:
 
-    embed = discord.Embed(title=data['character'],description=data['quote'],color=discord.Color.blue())
+        data = json.loads(response.text)
+        data = data[0]
 
-    embed.set_footer(text=f"From {data['anime']} | Animechan Quotes API")
+        embed = discord.Embed(title=data['character'],description=data['quote'],color=discord.Color.blue())
 
-    await ctx.send(embed=embed)
+        embed.set_footer(text=f"From {data['anime']} | Animechan Quotes API")
+        
+        if prev_msg == True:
+            await message.edit("> Showing quote for **\"{character_name}\"**", embed=embed)
+            prev_msg = False
+        else:
+            await ctx.send(f"> Showing first quote for **\"{character_name}\"** ", embed=embed)
 
 @bot.command('num')
 async def addnum(ctx, operator, number1, number2):

@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 
-class Quotes(commands.Cog):
+class quotes(commands.Cog):
 
     def __init__(self, client):
         self.client = client
@@ -15,4 +15,4 @@ class Quotes(commands.Cog):
         await ctx.send('pong')
 
 def setup(bot):
-    bot.add_cog(Quotes(bot))
+    bot.add_cog(quotes(bot))
