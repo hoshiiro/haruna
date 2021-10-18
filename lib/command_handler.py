@@ -1,4 +1,4 @@
-import requests, json, discord
+import requests, json, discord, datetime
 from . import bot
 
 prev_msg = None
@@ -64,8 +64,16 @@ async def clear(ctx, amount):
     await ctx.channel.purge(limit=int(amount))
 
 
-@bot.command('testchan')
-async def testchan(ctx, ch_id):
-    channel = ctx.get_channel(ch_id)
-    channel.send_message("bruh")
+@bot.command('about')
+async def about(ctx):
+    """Print about this bot."""
+
+    file = open("about.txt", "r").read()
+    embed = discord.Embed(
+            title="About Me",
+            description=file,
+            timestamp=datetime.datetime.utcnow())
+    embed.set_image(url="http://imgur.com/a/yvkvZcX")
+    embed.set_footer(text=f"Requested by {ctx.author.name}.", icon_url=ctx.author.avatar_url)
+    await ctx.send(f"> Information About Flaura Bot • [ for {ctx.author} ]", embed=embed)
 
