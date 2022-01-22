@@ -6,8 +6,8 @@ class ship:
 
     def __init__(self, shipname):
         self.shipname = shipname
-        #content = open('api/ship.html', 'r')
-        content = requests.get(f'https://azurlane.koumakan.jp/{shipname}').content
+        #content = open('./ship.html', 'r')
+        content = requests.get(f'https://azurlane.koumakan.jp/wiki/{shipname}').content
         self.soup = bs(content, 'html.parser')
     
     def ship_name(self):
@@ -24,7 +24,7 @@ class ship:
         return str(text)
     
     def ship_description(self):
-        suol = requests.get(f"https://azurlane.koumakan.jp/{self.shipname}/Quotes").content
+        suol = requests.get(f"https://azurlane.koumakan.jp/wiki/{self.shipname}/Quotes").content
         #suol = open('api/quote.html', 'r')
         sup = bs(suol, 'html.parser')
 
